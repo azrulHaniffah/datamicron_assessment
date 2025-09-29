@@ -4,6 +4,8 @@ import os
 from typing import List, Tuple, Dict, Any
 import json
 from search_router import get_answer
+import os
+from helper import OUT_FAISS, OUT_META, build_index
 
 genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
 
@@ -195,10 +197,19 @@ def main():
         print("Please set your Gemini API key:")
         print("export GEMINI_API_KEY='your-api-key-here'")
         return
-    
-    print("🚀 Starting Smart Search Chatbot...")
+  
+    if not (os.path.exists(OUT_FAISS) and os.path.exists(OUT_META)):
+        print("� Index files not found. Building index...")
+        try:
+            build_index()
+            print("✅ Index built successfully!")
+        except Exception as e:
+            print(f"❌ Failed to build index: {e}")
+            return
+
+    print("�🚀 Starting Smart Search Chatbot...")
     print("📡 Checking Gemini API connection...")
-    
+
     try:
         # Test API connection
         model = genai.GenerativeModel('gemini-2.0-flash-001')
@@ -207,9 +218,9 @@ def main():
     except Exception as e:
         print(f"❌ Failed to connect to Gemini API: {e}")
         return
-    
+
     demo = create_gradio_interface()
-    
+
     print("🌐 Launching Gradio interface...")
     demo.launch(
         server_name="0.0.0.0",
