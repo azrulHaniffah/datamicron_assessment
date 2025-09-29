@@ -62,7 +62,7 @@ langdetect==1.0.9
 lark==1.3.0
 litellm==1.77.4
 lxml==5.4.0
-madoka @ file:///D:/bld/madoka_1758567393280/work
+#madoka @ file:///D:/bld/madoka_1758567393280/work
 markdown-it-py==4.0.0
 MarkupSafe==3.0.3
 mdurl==0.1.2
