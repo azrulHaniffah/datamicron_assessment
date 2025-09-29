@@ -213,7 +213,7 @@ def main():
     print("🌐 Launching Gradio interface...")
     demo.launch(
         server_name="0.0.0.0",
-        server_port=7860,
+        server_port=8080,
         share=True,  # Set to True if you want a public link
         debug=True
     )

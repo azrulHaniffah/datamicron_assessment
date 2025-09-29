@@ -124,7 +124,7 @@ tf-playwright-stealth==1.2.0
 tiktoken==0.11.0
 tokenizers==0.22.1
 tomlkit==0.13.3
-torch==2.8.0+cu129
+torch==2.8.0
 tqdm==4.67.1
 transformers==4.56.2
 trimesh==4.8.3
