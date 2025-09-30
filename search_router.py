@@ -1,6 +1,7 @@
 import asyncio
 from helper import search  
-from web_crawl import web_search_and_fetch  
+from web_crawl import web_search_and_fetch
+import os
 
 def simple_reranker(results, query, top_k=3):
     scored = [r for r in results if "score" in r]
@@ -13,16 +14,18 @@ def simple_reranker(results, query, top_k=3):
         reranked = sorted(results, key=keyword_score, reverse=True)
     return reranked[:top_k]
 
-def get_answer(query: str, k: int = 3, max_chars: int = 8000) -> dict:
-    # Try internal search
+def get_answer(query: str, k: int = None, max_chars: int = 8000) -> dict:
+    if k is None:
+        k = int(os.getenv("top_k", 5))
+    internal_threshold = float(os.getenv("internal_threshold", 0.5))
+
     internal_results = search(query, k=k)
     reranked_internal = simple_reranker(internal_results, query, top_k=k)
-    if reranked_internal and reranked_internal[0].get("score", 0) > 0.5:
+    if reranked_internal and reranked_internal[0].get("score", 0) > internal_threshold:
         return {
             "source": "internal",
             "results": reranked_internal
         }
-    # Fallback to web search
     web_results = web_search_and_fetch(query, k=k, max_chars=max_chars)
     reranked_web = simple_reranker(web_results, query, top_k=k)
     return {
