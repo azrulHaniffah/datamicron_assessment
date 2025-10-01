@@ -6,6 +6,9 @@ import json
 from search_router import get_answer
 import os
 from helper import OUT_FAISS, OUT_META, build_index
+from dotenv import load_dotenv
+
+load_dotenv()
 
 genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
 
